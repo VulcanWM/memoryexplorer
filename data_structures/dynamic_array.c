@@ -7,13 +7,13 @@ typedef struct {
     int score;
 } leaderboard;
 
-leaderboard *load(int *size); // load from a text file into memory
-void unload(leaderboard *ptr); // unload all the memory
-leaderboard *add_data(leaderboard *ptr, int *size, char username[50], int score); // add data to the dynamic array
+leaderboard *load(int *size);
+void unload(leaderboard *ptr);
+leaderboard *add_data(leaderboard *ptr, int *size, char username[50], int score);
 void remove_data(); // remove data from the dynamic array
 void amend_data(); // amend a score of a user
-void display(leaderboard *ptr, int size); // display all the scores
-void search_data(); // search for the score of a user
+void display(leaderboard *ptr, int size);
+int search_data(const leaderboard *ptr, int size, char username[50]);
 void sort_data(); // sort all the score data based on score
 
 int main() {
@@ -31,6 +31,8 @@ int main() {
     printf("added new user\n");
     printf("displaying users with added data:\n");
     display(users, size);
+    int hiScore = search_data(users, size, "hi");
+    printf("hi's score is %d", hiScore);
     unload(users);
 
     printf("unloaded everything\n");
@@ -38,6 +40,8 @@ int main() {
 }
 
 leaderboard *load(int *size) {
+    // loads the data from a text file and stores it in a dynamic array
+    // returns the pointer to the dynamic array
     FILE *source = fopen("/Users/vulcanwm/CLionProjects/memoryexplorer/data.txt", "r");
     if (source == NULL) {
         printf("source not found");
@@ -95,16 +99,20 @@ leaderboard *load(int *size) {
 }
 
 void unload(leaderboard *ptr) {
+    // frees the dynamic array memory
     free(ptr);
 }
 
 void display(leaderboard *ptr, const int size) {
+    // displays all the entries in the dynamic array
     for (int i = 0; i < size; i++) {
         printf("username: %s, score: %d\n", ptr[i].username, ptr[i].score);
     }
 }
 
 leaderboard *add_data(leaderboard *ptr, int *size, char username[50], const int score) {
+    // adds a data entry to the dynamic array
+    // returns the new pointer of the dynamic array
     leaderboard *temp = realloc(ptr, sizeof(leaderboard) * (*size + 1));
     if (temp == NULL) {
         printf("memory allocation failed");
@@ -115,4 +123,15 @@ leaderboard *add_data(leaderboard *ptr, int *size, char username[50], const int 
     ptr[*size].score = score;
     (*size)++;
     return ptr;
+}
+
+int search_data(const leaderboard *ptr, const int size, char username[50]) {
+    // searches for the score of the user with the username given in the parameter
+    // returns -1 if the user has not been found
+    for (int i = 0; i < size; i++){
+        if (strcmp(ptr[i].username, username) == 0) {
+            return ptr[i].score;
+        }
+    }
+    return -1;
 }
