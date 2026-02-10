@@ -9,7 +9,7 @@ typedef struct {
 
 leaderboard *load(int *size); // load from a text file into memory
 void unload(leaderboard *ptr); // unload all the memory
-void add_data(); // add data to the dynamic array
+leaderboard *add_data(leaderboard *ptr, int *size, char username[50], int score); // add data to the dynamic array
 void remove_data(); // remove data from the dynamic array
 void amend_data(); // amend a score of a user
 void display(leaderboard *ptr, int size); // display all the scores
@@ -25,8 +25,14 @@ int main() {
         return 1;
     }
     printf("loaded everything\n");
+    printf("displaying data:\n");
+    display(users, size);
+    users = add_data(users, &size, "new user", 1000);
+    printf("added new user\n");
+    printf("displaying users with added data:\n");
     display(users, size);
     unload(users);
+
     printf("unloaded everything\n");
     return 0;
 }
@@ -96,4 +102,17 @@ void display(leaderboard *ptr, const int size) {
     for (int i = 0; i < size; i++) {
         printf("username: %s, score: %d\n", ptr[i].username, ptr[i].score);
     }
+}
+
+leaderboard *add_data(leaderboard *ptr, int *size, char username[50], const int score) {
+    leaderboard *temp = realloc(ptr, sizeof(leaderboard) * (*size + 1));
+    if (temp == NULL) {
+        printf("memory allocation failed");
+        return ptr;
+    }
+    ptr = temp;
+    strcpy(ptr[*size].username, username);
+    ptr[*size].score = score;
+    (*size)++;
+    return ptr;
 }
