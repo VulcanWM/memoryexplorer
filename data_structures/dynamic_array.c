@@ -9,11 +9,11 @@ typedef struct {
 
 leaderboard *load(int *size);
 void unload(leaderboard *ptr);
-leaderboard *add_data(leaderboard *ptr, int *size, char username[50], int score);
-void remove_data(); // remove data from the dynamic array
-void amend_data(leaderboard *ptr, int size, char username[50], int score);
+leaderboard *add_data(leaderboard *ptr, int *size, const char *username, int score);
+leaderboard *remove_data(leaderboard *ptr, int *size, const char *username); // remove data from the dynamic array
+void amend_data(leaderboard *ptr, int size, const char *username, int score);
 void display(leaderboard *ptr, int size);
-int search_data(const leaderboard *ptr, int size, char username[50]);
+int search_data(const leaderboard *ptr, int size, const char *username);
 void sort_data(); // sort all the score data based on score
 
 int main() {
@@ -57,7 +57,7 @@ leaderboard *load(int *size) {
     leaderboard *ptr = NULL;
 
     while (fgets(line, 100, source)) {
-        char username[50];
+        const char *username;
         char scoreStr[50];
         int scoreData = 0;
         int scoreStartIndex = 0;
@@ -116,7 +116,7 @@ void display(leaderboard *ptr, const int size) {
     }
 }
 
-leaderboard *add_data(leaderboard *ptr, int *size, char username[50], const int score) {
+leaderboard *add_data(leaderboard *ptr, int *size, const char *username, const int score) {
     // adds a data entry to the dynamic array
     // returns the new pointer of the dynamic array
     leaderboard *temp = realloc(ptr, sizeof(leaderboard) * (*size + 1));
@@ -131,8 +131,8 @@ leaderboard *add_data(leaderboard *ptr, int *size, char username[50], const int 
     return ptr;
 }
 
-int search_data(const leaderboard *ptr, const int size, char username[50]) {
-    // searches for the score of the user with the username given in the parameter
+int search_data(const leaderboard *ptr, const int size, const char *username) {
+    // searches for the score of the user with the username given as a parameter
     // returns -1 if the user has not been found
     for (int i = 0; i < size; i++){
         if (strcmp(ptr[i].username, username) == 0) {
@@ -142,7 +142,7 @@ int search_data(const leaderboard *ptr, const int size, char username[50]) {
     return -1;
 }
 
-void amend_data(leaderboard *ptr, const int size, char username[50], int score) {
+void amend_data(leaderboard *ptr, const int size, const char *username, int score) {
     // amends the score of a user in the dynamic array
     for (int i = 0; i < size; i++) {
         if (strcmp(ptr[i].username, username) == 0) {
@@ -150,4 +150,42 @@ void amend_data(leaderboard *ptr, const int size, char username[50], int score) 
             return;
         }
     }
+}
+
+leaderboard *remove_data(leaderboard *ptr, int *size, const char *username) {
+    // deletes the data entry of the user with the username given as a parameter
+    // returns the pointer to the new memory
+    if (*size == 0) {
+        return ptr;
+    }
+
+    int index = -1;
+
+    for (int i = 0; i < *size; i++) {
+        if (strcmp(ptr[i].username, username) == 0) {
+            index = i;
+            break;
+        }
+    }
+
+    if (index == -1) {
+        return ptr;
+    }
+
+    ptr[index] = ptr[*size-1];
+
+    (*size)--;
+
+    if (*size == 0) {
+        free(ptr);
+        return NULL;
+    }
+
+    leaderboard *temp = realloc(ptr, sizeof(leaderboard) * (*size));
+    if (temp == NULL) {
+        printf("memory allocation failed");
+        return ptr;
+    }
+    ptr = temp;
+    return ptr;
 }
