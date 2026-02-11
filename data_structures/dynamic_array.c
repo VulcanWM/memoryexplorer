@@ -25,18 +25,23 @@ int main() {
         return 1;
     }
     printf("loaded everything\n");
+
     printf("displaying data:\n");
     display(users, size);
+
     users = add_data(users, &size, "new user", 1000);
     printf("added new user\n");
+
     printf("displaying users with added data:\n");
     display(users, size);
+
     amend_data(users, size, "hi", 2000);
     int hiScore = search_data(users, size, "hi");
     printf("hi's score is %d\n", hiScore);
-    unload(users);
 
+    unload(users);
     printf("unloaded everything\n");
+
     return 0;
 }
 
