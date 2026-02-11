@@ -10,7 +10,7 @@ typedef struct {
 leaderboard *load(int *size);
 void unload(leaderboard *ptr);
 leaderboard *add_data(leaderboard *ptr, int *size, const char *username, int score);
-leaderboard *remove_data(leaderboard *ptr, int *size, const char *username); // remove data from the dynamic array
+leaderboard *remove_data(leaderboard *ptr, int *size, const char *username);
 void amend_data(leaderboard *ptr, int size, const char *username, int score);
 void display(leaderboard *ptr, int size);
 int search_data(const leaderboard *ptr, int size, const char *username);
@@ -58,25 +58,9 @@ leaderboard *load(int *size) {
 
     while (fgets(line, 100, source)) {
         char username[50];
-        char scoreStr[50];
-        int scoreData = 0;
-        int scoreStartIndex = 0;
-        int i = 0;
-        line[strcspn(line, "\n")] = '\0';
-        while (line[i] != '\0') {
-            if (line[i] == ',') {
-                username[i] = '\0';
-                scoreData++;
-                scoreStartIndex = i+1;
-            } else if (scoreData == 0) {
-                username[i] = line[i];
-            } else {
-                scoreStr[i-scoreStartIndex] = line[i];
-            }
-            i++;
-        }
-        scoreStr[i-scoreStartIndex] = '\0';
-        int score = atoi(scoreStr);
+        int score;
+        sscanf(line, "%49[^,],%d", username, &score);
+
 
         if (ptr == NULL) {
             ptr = malloc(sizeof(leaderboard) * (*size + 1));
