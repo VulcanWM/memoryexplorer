@@ -11,7 +11,7 @@ leaderboard *load(int *size);
 void unload(leaderboard *ptr);
 leaderboard *add_data(leaderboard *ptr, int *size, char username[50], int score);
 void remove_data(); // remove data from the dynamic array
-void amend_data(); // amend a score of a user
+void amend_data(leaderboard *ptr, int size, char username[50], int score);
 void display(leaderboard *ptr, int size);
 int search_data(const leaderboard *ptr, int size, char username[50]);
 void sort_data(); // sort all the score data based on score
@@ -31,8 +31,9 @@ int main() {
     printf("added new user\n");
     printf("displaying users with added data:\n");
     display(users, size);
+    amend_data(users, size, "hi", 2000);
     int hiScore = search_data(users, size, "hi");
-    printf("hi's score is %d", hiScore);
+    printf("hi's score is %d\n", hiScore);
     unload(users);
 
     printf("unloaded everything\n");
@@ -134,4 +135,14 @@ int search_data(const leaderboard *ptr, const int size, char username[50]) {
         }
     }
     return -1;
+}
+
+void amend_data(leaderboard *ptr, const int size, char username[50], int score) {
+    // amends the score of a user in the dynamic array
+    for (int i = 0; i < size; i++) {
+        if (strcmp(ptr[i].username, username) == 0) {
+            ptr[i].score = score;
+            return;
+        }
+    }
 }
