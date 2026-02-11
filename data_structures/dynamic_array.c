@@ -29,8 +29,11 @@ int main() {
     printf("displaying data:\n");
     display(users, size);
 
+    users = remove_data(users, &size, "hello");
+    printf("removed user 'hello'\n");
+
     users = add_data(users, &size, "new user", 1000);
-    printf("added new user\n");
+    printf("added user 'new user'\n");
 
     printf("displaying users with added data:\n");
     display(users, size);
@@ -164,12 +167,5 @@ leaderboard *remove_data(leaderboard *ptr, int *size, const char *username) {
         free(ptr);
         return NULL;
     }
-
-    leaderboard *temp = realloc(ptr, sizeof(leaderboard) * (*size));
-    if (temp == NULL) {
-        printf("memory allocation failed");
-        return ptr;
-    }
-    ptr = temp;
     return ptr;
 }
