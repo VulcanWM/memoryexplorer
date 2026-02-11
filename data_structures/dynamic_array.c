@@ -57,7 +57,7 @@ leaderboard *load(int *size) {
     leaderboard *ptr = NULL;
 
     while (fgets(line, 100, source)) {
-        const char *username;
+        char username[50];
         char scoreStr[50];
         int scoreData = 0;
         int scoreStartIndex = 0;
