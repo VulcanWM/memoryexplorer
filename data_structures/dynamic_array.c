@@ -14,7 +14,6 @@ leaderboard *remove_data(leaderboard *ptr, int *size, const char *username);
 void amend_data(leaderboard *ptr, int size, const char *username, int score);
 void display(leaderboard *ptr, int size);
 int search_data(const leaderboard *ptr, int size, const char *username);
-void sort_data(); // sort all the score data based on score
 
 int main() {
     int size = 0;
@@ -39,8 +38,10 @@ int main() {
     display(users, size);
 
     amend_data(users, size, "hi", 2000);
+    printf("changed user hi's score\n");
+
     int hiScore = search_data(users, size, "hi");
-    printf("hi's score is %d\n", hiScore);
+    printf("searching for a score. hi's score is %d\n", hiScore);
 
     unload(users);
     printf("unloaded everything\n");
