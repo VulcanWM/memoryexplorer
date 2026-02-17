@@ -12,7 +12,7 @@ leaderboard *load();
 void unload(leaderboard *users);
 leaderboard *add_data(leaderboard *users, const char *username, int score);
 leaderboard *remove_data(leaderboard *users, const char *username);
-void amend_data();
+void amend_data(leaderboard *users, const char *username, int score);
 void display(leaderboard *users);
 int search_data(const leaderboard *users, const char *username);
 
@@ -21,8 +21,10 @@ int main() {
     printf("loaded all the data\n");
     int hi_score = search_data(users, "hi");
     printf("hi's score: %d\n", hi_score);
-    users = remove_data(users, "hi");
-    printf("removed user hi\n");
+    amend_data(users, "hi", 123456);
+    printf("changed hi's score to 123456\n");
+    users = remove_data(users, "abcde");
+    printf("removed user abcde\n");
     users = add_data(users, "new user", 1000);
     printf("added new user\n");
     printf("displaying the data\n");
@@ -132,4 +134,14 @@ leaderboard *remove_data(leaderboard *users, const char *username) {
         users = users->next;
     }
     return originalPointer;
+}
+
+void amend_data(leaderboard *users, const char *username, const int score) {
+    while (users != NULL) {
+        if (strcmp(users->username, username) == 0) {
+            users->score = score;
+            return;
+        }
+        users = users->next;
+    }
 }
