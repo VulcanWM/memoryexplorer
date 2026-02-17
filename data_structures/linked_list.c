@@ -10,7 +10,7 @@ typedef struct leaderboard {
 
 leaderboard *load();
 void unload(leaderboard *users);
-void add_data();
+void add_data(leaderboard *users, const char *username, int score);
 void remove_data();
 void amend_data();
 void display(leaderboard *users);
@@ -18,8 +18,13 @@ void search_data();
 
 int main() {
     leaderboard *users = load();
+    printf("loaded all the data\n");
+    add_data(users, "new user", 1000);
+    printf("added new user");
+    printf("displaying the data\n");
     display(users);
     unload(users);
+    printf("unloaded all the data\n");
     return 0;
 }
 
@@ -59,6 +64,7 @@ leaderboard *load() {
 }
 
 void unload(leaderboard *users) {
+    // frees all the memory used to store the linked list
     while (users != NULL) {
         leaderboard *nextPtr = users->next;
         free(users);
@@ -67,8 +73,23 @@ void unload(leaderboard *users) {
 }
 
 void display(leaderboard *users) {
+    // displays all the data contained in the linked
     while (users != NULL) {
         printf("username: %s, score: %d\n", users->username, users->score);
         users = users->next;
     }
+}
+
+void add_data(leaderboard *users, const char *username, const int score) {
+    // adds a new data entry to the linked list
+    leaderboard *newPtr = malloc(sizeof(leaderboard));
+    if (newPtr == NULL) {
+        printf("memory allocation failed");
+        return;
+    }
+    strcpy(newPtr->username, username);
+    newPtr->score = score;
+    leaderboard *bPointer = users->next;
+    users->next = newPtr;
+    newPtr->next = bPointer;
 }
