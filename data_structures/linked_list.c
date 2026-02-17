@@ -10,7 +10,7 @@ typedef struct leaderboard {
 
 leaderboard *load();
 void unload(leaderboard *users);
-void add_data(leaderboard *users, const char *username, int score);
+leaderboard *add_data(leaderboard *users, const char *username, int score);
 void remove_data();
 void amend_data();
 void display(leaderboard *users);
@@ -19,7 +19,7 @@ void search_data();
 int main() {
     leaderboard *users = load();
     printf("loaded all the data\n");
-    add_data(users, "new user", 1000);
+    users = add_data(users, "new user", 1000);
     printf("added new user");
     printf("displaying the data\n");
     display(users);
@@ -80,16 +80,21 @@ void display(leaderboard *users) {
     }
 }
 
-void add_data(leaderboard *users, const char *username, const int score) {
+leaderboard *add_data(leaderboard *users, const char *username, const int score) {
     // adds a new data entry to the linked list
     leaderboard *newPtr = malloc(sizeof(leaderboard));
     if (newPtr == NULL) {
         printf("memory allocation failed");
-        return;
+        return users;
     }
-    strcpy(newPtr->username, username);
-    newPtr->score = score;
-    leaderboard *bPointer = users->next;
-    users->next = newPtr;
-    newPtr->next = bPointer;
+    if (users == NULL) {
+        users = newPtr;
+    } else {
+        strcpy(newPtr->username, username);
+        newPtr->score = score;
+        leaderboard *bPointer = users->next;
+        users->next = newPtr;
+        newPtr->next = bPointer;
+    }
+    return users;
 }
