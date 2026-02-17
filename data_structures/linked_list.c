@@ -11,16 +11,20 @@ typedef struct leaderboard {
 leaderboard *load();
 void unload(leaderboard *users);
 leaderboard *add_data(leaderboard *users, const char *username, int score);
-void remove_data();
+leaderboard *remove_data(leaderboard *users, const char *username);
 void amend_data();
 void display(leaderboard *users);
-void search_data();
+int search_data(const leaderboard *users, const char *username);
 
 int main() {
     leaderboard *users = load();
     printf("loaded all the data\n");
+    int hi_score = search_data(users, "hi");
+    printf("hi's score: %d\n", hi_score);
+    users = remove_data(users, "hi");
+    printf("removed user hi\n");
     users = add_data(users, "new user", 1000);
-    printf("added new user");
+    printf("added new user\n");
     printf("displaying the data\n");
     display(users);
     unload(users);
@@ -97,4 +101,35 @@ leaderboard *add_data(leaderboard *users, const char *username, const int score)
         newPtr->next = bPointer;
     }
     return users;
+}
+
+int search_data(const leaderboard *users, const char *username) {
+    while (users != NULL) {
+        if (strcmp(users->username, username) == 0) {
+            return users->score;
+        }
+        users = users->next;
+    }
+    return -1;
+}
+
+leaderboard *remove_data(leaderboard *users, const char *username) {
+    // removes the data entry for the username specified in the parameter
+    if (users == NULL) return NULL;
+    if (strcmp(users->username, username) == 0) {
+        leaderboard *newPtr = users->next;
+        free(users);
+        return newPtr;
+    }
+    leaderboard *originalPointer = users;
+    while (users->next != NULL) {
+        if (strcmp(users->next->username, username) == 0) {
+            leaderboard *newPtr = users->next->next;
+            free(users->next);
+            users->next = newPtr;
+            break;
+        }
+        users = users->next;
+    }
+    return originalPointer;
 }
