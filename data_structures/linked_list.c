@@ -53,18 +53,12 @@ leaderboard *load() {
         leaderboard *newPtr = malloc(sizeof(leaderboard));
         if (newPtr == NULL) {
             printf("memory allocation failed");
-            return NULL;
+            return ptr;
         }
         strcpy(newPtr->username, username);
         newPtr->score = score;
-        if (ptr == NULL) {
-            newPtr->next = NULL;
-            ptr = newPtr;
-        } else {
-            leaderboard *bPointer = ptr->next;
-            ptr->next = newPtr;
-            newPtr->next = bPointer;
-        }
+        newPtr->next = ptr;
+        ptr = newPtr;
     }
     fclose(source);
     return ptr;
