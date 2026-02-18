@@ -58,6 +58,7 @@ leaderboard *load() {
         strcpy(newPtr->username, username);
         newPtr->score = score;
         if (ptr == NULL) {
+            newPtr->next = NULL;
             ptr = newPtr;
         } else {
             leaderboard *bPointer = ptr->next;
@@ -93,16 +94,10 @@ leaderboard *add_data(leaderboard *users, const char *username, const int score)
         printf("memory allocation failed");
         return users;
     }
-    if (users == NULL) {
-        users = newPtr;
-    } else {
-        strcpy(newPtr->username, username);
-        newPtr->score = score;
-        leaderboard *bPointer = users->next;
-        users->next = newPtr;
-        newPtr->next = bPointer;
-    }
-    return users;
+    strcpy(newPtr->username, username);
+    newPtr->score = score;
+    newPtr->next = users;
+    return newPtr;
 }
 
 int search_data(const leaderboard *users, const char *username) {
@@ -137,6 +132,7 @@ leaderboard *remove_data(leaderboard *users, const char *username) {
 }
 
 void amend_data(leaderboard *users, const char *username, const int score) {
+    // amends the score of a user in the dynamic array
     while (users != NULL) {
         if (strcmp(users->username, username) == 0) {
             users->score = score;
