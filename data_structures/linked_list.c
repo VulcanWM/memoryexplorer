@@ -1,40 +1,27 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "linked_list.h"
 
-typedef struct leaderboard {
-    char username[50];
-    int score;
-    struct leaderboard *next;
-} leaderboard;
-
-leaderboard *load();
-void unload(leaderboard *users);
-leaderboard *add_data(leaderboard *users, const char *username, int score);
-leaderboard *remove_data(leaderboard *users, const char *username);
-void amend_data(leaderboard *users, const char *username, int score);
-void display(leaderboard *users);
-int search_data(const leaderboard *users, const char *username);
-
-int main() {
-    leaderboard *users = load();
+int linked_list() {
+    leaderboard *users = ll_load();
     printf("loaded all the data\n");
-    int hi_score = search_data(users, "hi");
+    int hi_score = ll_search_data(users, "hi");
     printf("hi's score: %d\n", hi_score);
-    amend_data(users, "hi", 123456);
+    ll_amend_data(users, "hi", 123456);
     printf("changed hi's score to 123456\n");
-    users = remove_data(users, "abcde");
+    users = ll_remove_data(users, "abcde");
     printf("removed user abcde\n");
-    users = add_data(users, "new user", 1000);
+    users = ll_add_data(users, "new user", 1000);
     printf("added new user\n");
     printf("displaying the data\n");
-    display(users);
-    unload(users);
+    ll_display(users);
+    ll_unload(users);
     printf("unloaded all the data\n");
     return 0;
 }
 
-leaderboard *load() {
+leaderboard *ll_load() {
     // loads the data from a text file and stores it in a dynamic array
     // returns the pointer to the dynamic array
     FILE *source = fopen("/Users/vulcanwm/CLionProjects/memoryexplorer/data.txt", "r");
@@ -64,7 +51,7 @@ leaderboard *load() {
     return ptr;
 }
 
-void unload(leaderboard *users) {
+void ll_unload(leaderboard *users) {
     // frees all the memory used to store the linked list
     while (users != NULL) {
         leaderboard *nextPtr = users->next;
@@ -73,7 +60,7 @@ void unload(leaderboard *users) {
     }
 }
 
-void display(leaderboard *users) {
+void ll_display(leaderboard *users) {
     // displays all the data contained in the linked
     while (users != NULL) {
         printf("username: %s, score: %d\n", users->username, users->score);
@@ -81,7 +68,7 @@ void display(leaderboard *users) {
     }
 }
 
-leaderboard *add_data(leaderboard *users, const char *username, const int score) {
+leaderboard *ll_add_data(leaderboard *users, const char *username, const int score) {
     // adds a new data entry to the linked list
     leaderboard *newPtr = malloc(sizeof(leaderboard));
     if (newPtr == NULL) {
@@ -94,7 +81,7 @@ leaderboard *add_data(leaderboard *users, const char *username, const int score)
     return newPtr;
 }
 
-int search_data(const leaderboard *users, const char *username) {
+int ll_search_data(const leaderboard *users, const char *username) {
     while (users != NULL) {
         if (strcmp(users->username, username) == 0) {
             return users->score;
@@ -104,7 +91,7 @@ int search_data(const leaderboard *users, const char *username) {
     return -1;
 }
 
-leaderboard *remove_data(leaderboard *users, const char *username) {
+leaderboard *ll_remove_data(leaderboard *users, const char *username) {
     // removes the data entry for the username specified in the parameter
     if (users == NULL) return NULL;
     if (strcmp(users->username, username) == 0) {
@@ -125,7 +112,7 @@ leaderboard *remove_data(leaderboard *users, const char *username) {
     return originalPointer;
 }
 
-void amend_data(leaderboard *users, const char *username, const int score) {
+void ll_amend_data(leaderboard *users, const char *username, const int score) {
     // amends the score of a user in the dynamic array
     while (users != NULL) {
         if (strcmp(users->username, username) == 0) {
