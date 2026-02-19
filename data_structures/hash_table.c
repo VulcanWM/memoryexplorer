@@ -15,21 +15,23 @@ void unload(leaderboard *table[26]);
 void add_data(leaderboard *table[26], const char *username, int score);
 void remove_data();
 void amend_data();
-void display();
+void display(leaderboard *table[26]);
 void search_data();
 
-int hash_table() {
+int main() {
     leaderboard *table[26];
     for (int i = 0; i < 26; i++) {
         table[i] = NULL;
     }
 
     load(table);
-    printf("loaded everything");
+    printf("loaded everything\n");
     add_data(table, "new user", 1000);
     printf("added new user\n");
+    display(table);
+    printf("displayed all users\n");
     unload(table);
-    printf("unloaded everything");
+    printf("unloaded everything\n");
     return 0;
 }
 
@@ -93,4 +95,14 @@ void add_data(leaderboard *table[26], const char *username, int score) {
     strcpy(newPtr->username, username);
     newPtr->next = ptr;
     table[bucket] = newPtr;
+}
+
+void display(leaderboard *table[26]) {
+    for (int i = 0; i < 26; i++) {
+        leaderboard *ptr = table[i];
+        while (ptr != NULL) {
+            printf("username: %s, score: %d\n", ptr->username, ptr->score);
+            ptr = ptr->next;
+        }
+    }
 }
