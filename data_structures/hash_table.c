@@ -90,6 +90,7 @@ void unload(leaderboard *table[26]) {
 }
 
 void add_data(leaderboard *table[26], const char *username, int score) {
+    // adds a data entry to the hash table
     int bucket = get_bucket(username);
     leaderboard *ptr = table[bucket];
     leaderboard *newPtr = malloc(sizeof(leaderboard));
@@ -104,6 +105,7 @@ void add_data(leaderboard *table[26], const char *username, int score) {
 }
 
 void display(leaderboard *table[26]) {
+    // displays all the data contained in the hash table
     for (int i = 0; i < 26; i++) {
         leaderboard *ptr = table[i];
         while (ptr != NULL) {
@@ -114,6 +116,8 @@ void display(leaderboard *table[26]) {
 }
 
 int search_data(leaderboard *table[26], const char *username) {
+    // searches for a data entry with the username given in the parameter
+    // returns the score or -1 if not found
     for (int i = 0; i < 26; i++) {
         leaderboard *ptr = table[i];
         while (ptr != NULL) {
@@ -127,6 +131,7 @@ int search_data(leaderboard *table[26], const char *username) {
 }
 
 void amend_data(leaderboard *table[26], const char *username, int score) {
+    // amends a data entry in the hash table
     for (int i = 0; i < 26; i++) {
         leaderboard *ptr = table[i];
         while (ptr != NULL) {
@@ -140,6 +145,7 @@ void amend_data(leaderboard *table[26], const char *username, int score) {
 }
 
 void remove_data(leaderboard *table[26], const char *username) {
+    // removes a data entry in the hash table
     for (int i = 0; i < 26; i++) {
         leaderboard *ptr = table[i];
         if (strcmp(ptr->username, username) == 0) {
