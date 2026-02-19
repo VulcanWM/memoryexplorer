@@ -14,9 +14,9 @@ void load(leaderboard *table[26]);
 void unload(leaderboard *table[26]);
 void add_data(leaderboard *table[26], const char *username, int score);
 void remove_data();
-void amend_data();
+void amend_data(leaderboard *table[26], const char *username, int score);
 void display(leaderboard *table[26]);
-void search_data();
+int search_data(leaderboard *table[26], const char *username);
 
 int main() {
     leaderboard *table[26];
@@ -26,6 +26,10 @@ int main() {
 
     load(table);
     printf("loaded everything\n");
+    int hi_score = search_data(table, "hi");
+    printf("hi's score: %d\n", hi_score);
+    amend_data(table, "hi", 123456);
+    printf("changed hi's score to 123456\n");
     add_data(table, "new user", 1000);
     printf("added new user\n");
     display(table);
@@ -103,6 +107,30 @@ void display(leaderboard *table[26]) {
         while (ptr != NULL) {
             printf("username: %s, score: %d\n", ptr->username, ptr->score);
             ptr = ptr->next;
+        }
+    }
+}
+
+int search_data(leaderboard *table[26], const char *username) {
+    for (int i = 0; i < 26; i++) {
+        leaderboard *ptr = table[i];
+        while (ptr != NULL) {
+            if (strcmp(ptr->username, username) == 0) {
+                return ptr->score;
+            }
+        }
+    }
+    return -1;
+}
+
+void amend_data(leaderboard *table[26], const char *username, int score) {
+    for (int i = 0; i < 26; i++) {
+        leaderboard *ptr = table[i];
+        while (ptr != NULL) {
+            if (strcmp(ptr->username, username) == 0) {
+                ptr->score = score;
+                return;
+            }
         }
     }
 }
