@@ -3,40 +3,6 @@
 #include <string.h>
 #include "dynamic_array.h"
 
-int dynamic_array() {
-    int size = 0;
-    leaderboard *users = da_load(&size);
-    if (users == NULL)
-    {
-        printf("loading failed\n");
-        return 1;
-    }
-    printf("loaded everything\n");
-
-    printf("displaying data:\n");
-    da_display(users, size);
-
-    users = da_remove_data(users, &size, "hello");
-    printf("removed user 'hello'\n");
-
-    users = da_add_data(users, &size, "new user", 1000);
-    printf("added user 'new user'\n");
-
-    printf("displaying users with added data:\n");
-    da_display(users, size);
-
-    da_amend_data(users, size, "hi", 2000);
-    printf("changed user hi's score\n");
-
-    int hiScore = da_search_data(users, size, "hi");
-    printf("searching for a score. hi's score is %d\n", hiScore);
-
-    da_unload(users);
-    printf("unloaded everything\n");
-
-    return 0;
-}
-
 leaderboard *da_load(int *size) {
     // loads the data from a text file and stores it in a dynamic array
     // returns the pointer to the dynamic array

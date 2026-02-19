@@ -4,29 +4,6 @@
 #include <string.h>
 #include "hash_table.h"
 
-int hash_table() {
-    leaderboard *table[26];
-    for (int i = 0; i < 26; i++) {
-        table[i] = NULL;
-    }
-
-    ht_load(table);
-    printf("loaded all the data\n");
-    int hi_score = ht_search_data(table, "hi");
-    printf("hi's score: %d\n", hi_score);
-    ht_amend_data(table, "hi", 123456);
-    printf("changed hi's score to 123456\n");
-    ht_remove_data(table, "abcde");
-    printf("removed user abcde\n");
-    ht_add_data(table, "new user", 1000);
-    printf("added new user\n");
-    printf("displaying the data\n");
-    ht_display(table);
-    ht_unload(table);
-    printf("unloaded all the data\n");
-    return 0;
-}
-
 int ht_get_bucket(const char *username) {
     // get the bucket of the hash table from the first letter of the username
     return tolower(username[0]) - 'a';

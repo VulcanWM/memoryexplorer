@@ -3,24 +3,6 @@
 #include <string.h>
 #include "linked_list.h"
 
-int linked_list() {
-    leaderboard *users = ll_load();
-    printf("loaded all the data\n");
-    int hi_score = ll_search_data(users, "hi");
-    printf("hi's score: %d\n", hi_score);
-    ll_amend_data(users, "hi", 123456);
-    printf("changed hi's score to 123456\n");
-    users = ll_remove_data(users, "abcde");
-    printf("removed user abcde\n");
-    users = ll_add_data(users, "new user", 1000);
-    printf("added new user\n");
-    printf("displaying the data\n");
-    ll_display(users);
-    ll_unload(users);
-    printf("unloaded all the data\n");
-    return 0;
-}
-
 leaderboard *ll_load() {
     // loads the data from a text file and stores it in a dynamic array
     // returns the pointer to the dynamic array
