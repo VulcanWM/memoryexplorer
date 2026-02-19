@@ -13,7 +13,7 @@ int get_bucket(const char *username);
 void load(leaderboard *table[26]);
 void unload(leaderboard *table[26]);
 void add_data(leaderboard *table[26], const char *username, int score);
-void remove_data();
+void remove_data(leaderboard *table[26], const char *username);
 void amend_data(leaderboard *table[26], const char *username, int score);
 void display(leaderboard *table[26]);
 int search_data(leaderboard *table[26], const char *username);
@@ -25,17 +25,19 @@ int main() {
     }
 
     load(table);
-    printf("loaded everything\n");
+    printf("loaded all the data\n");
     int hi_score = search_data(table, "hi");
     printf("hi's score: %d\n", hi_score);
     amend_data(table, "hi", 123456);
     printf("changed hi's score to 123456\n");
+    remove_data(table, "abcde");
+    printf("removed user abcde\n");
     add_data(table, "new user", 1000);
     printf("added new user\n");
+    printf("displaying the data\n");
     display(table);
-    printf("displayed all users\n");
     unload(table);
-    printf("unloaded everything\n");
+    printf("unloaded all the data\n");
     return 0;
 }
 
@@ -118,6 +120,7 @@ int search_data(leaderboard *table[26], const char *username) {
             if (strcmp(ptr->username, username) == 0) {
                 return ptr->score;
             }
+            ptr = ptr->next;
         }
     }
     return -1;
@@ -131,6 +134,27 @@ void amend_data(leaderboard *table[26], const char *username, int score) {
                 ptr->score = score;
                 return;
             }
+            ptr = ptr->next;
+        }
+    }
+}
+
+void remove_data(leaderboard *table[26], const char *username) {
+    for (int i = 0; i < 26; i++) {
+        leaderboard *ptr = table[i];
+        if (strcmp(ptr->username, username) == 0) {
+            table[i] = ptr->next;
+            free(ptr);
+            return;
+        }
+        while (ptr->next != NULL) {
+            if (strcmp(ptr->next->username, username) == 0) {
+                leaderboard *newPtr = ptr->next->next;
+                free(ptr->next);
+                ptr->next = newPtr;
+                break;
+            }
+            ptr = ptr->next;
         }
     }
 }
