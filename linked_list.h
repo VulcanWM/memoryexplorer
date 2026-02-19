@@ -1,18 +1,18 @@
 #ifndef LINKED_LIST_H
 #define LINKED_LIST_H
 
-typedef struct leaderboard {
+typedef struct ll_leaderboard {
     char username[50];
     int score;
-    struct leaderboard *next;
-} leaderboard;
+    struct ll_leaderboard *next;
+} ll_leaderboard;
 
-leaderboard *ll_load();
-void ll_unload(leaderboard *users);
-leaderboard *ll_add_data(leaderboard *users, const char *username, int score);
-leaderboard *ll_remove_data(leaderboard *users, const char *username);
-void ll_amend_data(leaderboard *users, const char *username, int score);
-void ll_display(leaderboard *users);
-int ll_search_data(const leaderboard *users, const char *username);
+ll_leaderboard *ll_load();
+void ll_unload(ll_leaderboard *users);
+ll_leaderboard *ll_add_data(ll_leaderboard *users, const char *username, int score);
+ll_leaderboard *ll_remove_data(ll_leaderboard *users, const char *username);
+void ll_amend_data(ll_leaderboard *users, const char *username, int score);
+void ll_display(ll_leaderboard *users);
+int ll_search_data(const ll_leaderboard *users, const char *username);
 
 #endif //LINKED_LIST_H
