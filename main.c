@@ -5,6 +5,8 @@
 #include "linked_list.h"
 #include "hash_table.h"
 
+#define DATA_FILE "data.txt"
+
 int main() {
     clock_t start, end;
     double elapsed;
