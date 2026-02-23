@@ -5,8 +5,6 @@
 #include "linked_list.h"
 #include "hash_table.h"
 
-#define DATA_FILE "/Users/vulcanwm/CLionProjects/memoryexplorer/data.txt"
-
 int main() {
     clock_t start, end;
     double elapsed;

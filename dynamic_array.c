@@ -6,7 +6,7 @@
 da_leaderboard *da_load(int *size) {
     // loads the data from a text file and stores it in a dynamic array
     // returns the pointer to the dynamic array
-    FILE *source = fopen("/Users/vulcanwm/CLionProjects/memoryexplorer/data.txt", "r");
+    FILE *source = fopen("data.txt", "r");
     if (source == NULL) {
         printf("source not found");
         return NULL;
