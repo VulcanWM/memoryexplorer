@@ -1,0 +1,59 @@
+name: build-and-test
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v4
+
+      - name: set up gcc
+        uses: msys2/setup-msys2@v2
+        with:
+          update: true
+          install: gcc
+
+      - name: build exe
+        run: |
+          gcc main.c dynamic_array.c linked_list.c hash_table.c -o memoryexplorer.exe
+
+      - name: copy data file
+        run: copy data.txt memoryexplorer.exe
+
+      - name: test exe
+        run: memoryexplorer.exe
+
+      - name: upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: memoryexplorer-windows
+          path: |
+            memoryexplorer.exe
+            data.txt
+
+  build-mac:
+    runs-on: macos-latest
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v4
+
+      - name: build exe
+        run: |
+          gcc main.c dynamic_array.c linked_list.c hash_table.c -o memoryexplorer
+
+      - name: copy data file
+        run: cp data.txt memoryexplorer
+
+      - name: test exe
+        run: ./memoryexplorer
+
+      - name: upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: memoryexplorer-mac
+          path: |
+            memoryexplorer
+            data.txt
