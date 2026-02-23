@@ -7,24 +7,18 @@ jobs:
   build-windows:
     runs-on: windows-latest
     steps:
-      - name: checkout repo
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: set up gcc
-        uses: msys2/setup-msys2@v2
+      - uses: msys2/setup-msys2@v2
         with:
           update: true
           install: gcc
 
       - name: build exe
-        run: |
-          gcc main.c dynamic_array.c linked_list.c hash_table.c -o memoryexplorer.exe
-
-      - name: copy data file
-        run: copy data.txt memoryexplorer.exe
+        run: gcc main.c dynamic_array.c linked_list.c hash_table.c -o memoryexplorer.exe
 
       - name: test exe
-        run: memoryexplorer.exe
+        run: .\memoryexplorer.exe
 
       - name: upload artifact
         uses: actions/upload-artifact@v4
@@ -37,15 +31,10 @@ jobs:
   build-mac:
     runs-on: macos-latest
     steps:
-      - name: checkout repo
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: build exe
-        run: |
-          gcc main.c dynamic_array.c linked_list.c hash_table.c -o memoryexplorer
-
-      - name: copy data file
-        run: cp data.txt memoryexplorer
+        run: gcc main.c dynamic_array.c linked_list.c hash_table.c -o memoryexplorer
 
       - name: test exe
         run: ./memoryexplorer
